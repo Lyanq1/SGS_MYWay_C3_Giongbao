@@ -1,0 +1,12 @@
+# Concept Prompts
+
+This file will contain prompts used for brainstorming game ideas and concepts.
+
+## Initial Brainstorming Prompts
+- [To be filled with brainstorming prompts]
+
+## Theme Selection Prompts  
+- [To be filled with theme selection prompts]
+
+## Game Mechanics Ideation
+- [To be filled with game mechanics prompts]

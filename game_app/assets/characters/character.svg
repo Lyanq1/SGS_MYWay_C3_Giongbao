@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32" height="48" viewBox="0 0 32 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Conical Hat (Nón Lá) -->
+  <path d="M16 0L4 24L28 24Z" fill="#ff8c00" stroke="#000" stroke-width="1"/>
+  <path d="M16 4L8 20L24 20Z" fill="#ffa500" stroke="#000" stroke-width="1"/>
+  
+  <!-- Face -->
+  <circle cx="16" cy="28" r="6" fill="#fdbcb4" stroke="#000"/>
+  <circle cx="14" cy="27" r="1" fill="#000"/>
+  <circle cx="18" cy="27" r="1" fill="#000"/>
+  <path d="M15 30 Q16 31 17 30" stroke="#000" fill="none"/>
+  
+  <!-- Body - Traditional Vietnamese Clothing -->
+  <rect x="10" y="34" width="12" height="14" fill="#ff4757" stroke="#000"/>
+  <rect x="12" y="42" width="8" height="6" fill="#ff6b6b" stroke="#000"/>
+  
+  <!-- Arms -->
+  <rect x="8" y="36" width="4" height="8" fill="#fdbcb4" stroke="#000" transform="rotate(-15 8 36)"/>
+  <rect x="20" y="36" width="4" height="8" fill="#fdbcb4" stroke="#000" transform="rotate(15 24 36)"/>
+</svg>

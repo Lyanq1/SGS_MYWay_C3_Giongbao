@@ -1,0 +1,17 @@
+# Refinement Prompts
+
+This file will contain prompts used for debugging, polishing, optimization, and improving the game.
+
+## Debugging Prompts
+- [To be filled with prompts for identifying and fixing bugs]
+- [To be filled with prompts for performance optimization]
+- [To be filled with prompts for cross-browser compatibility]
+
+## Polish and Enhancement Prompts
+- [To be filled with prompts for improving user experience]
+- [To be filled with prompts for adding visual polish]
+- [To be filled with prompts for balancing game mechanics]
+
+## Testing Prompts
+- [To be filled with prompts for testing different scenarios]
+- [To be filled with prompts for accessibility improvements]

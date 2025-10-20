@@ -1,0 +1,15 @@
+# Asset Generation Prompts
+
+This file will contain prompts used for generating visual assets, sprites, backgrounds, and other game elements.
+
+## Visual Asset Prompts
+- [To be filled with prompts for generating sprites and characters]
+- [To be filled with prompts for creating backgrounds and environments]
+- [To be filled with prompts for UI elements and icons]
+
+## Sound Effect Prompts
+- [To be filled with prompts for generating sound effects]
+- [To be filled with prompts for background music]
+
+## Animation Prompts
+- [To be filled with prompts for creating animations]

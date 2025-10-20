@@ -1,0 +1,16 @@
+# Code Generation Prompts
+
+This file will contain prompts used for generating game logic, UI code, and other programming elements.
+
+## Game Logic Prompts
+- [To be filled with prompts for core game mechanics]
+- [To be filled with prompts for player interactions]
+- [To be filled with prompts for game state management]
+
+## UI/UX Prompts
+- [To be filled with prompts for menu screens]
+- [To be filled with prompts for gameplay interfaces]
+- [To be filled with prompts for responsive design]
+
+## JavaScript Framework Prompts
+- [To be filled with prompts for specific JavaScript libraries/frameworks]
