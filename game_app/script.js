@@ -8,15 +8,19 @@ const gameState = {
   gridSize: { width: 14, height: 10 },
   cellSize: 0, // Will be calculated based on container size
   inventory: [],
+  essentialItems: 0, // number of essential items collected in screen 1
   gameTime: 60,
   isGameRunning: false,
   currentScreenNumber: 1,
+  mainPowerOff: false, // screen 2: electrical main switch turned off
   hasWhistle: false,
   hasFlashlight: false,
+  hasPhone: false,
   phoneCalled: false,
   whistleUsed: false,
   whistleTimer: 0,
   audioEnabled: true,
+  dialogueTimer: null, // Timer for auto-hiding dialogue
 };
 
 // Audio System
@@ -77,6 +81,8 @@ const screens = {
   screen1: document.getElementById("screen1-supermarket"),
   screen2: document.getElementById("screen2-indoor"),
   screen3: document.getElementById("screen3-bedroom"),
+  screen4: document.getElementById("screen4-success"),
+  ending: document.getElementById("screen-ending"),
 };
 
 // Button Elements
@@ -164,6 +170,23 @@ document.addEventListener("DOMContentLoaded", function () {
     showScreen("menu");
   });
 
+  // screen4 back to menu
+  const screen4Back = document.getElementById("screen4-back-btn");
+  const screen4Continue = document.getElementById("screen4-continue-btn");
+  const screen4Try = document.getElementById("screen4-try-btn");
+  addEventListenerIfExists(screen4Continue, "click", () => {
+    showScreen("ending");
+  });
+  addEventListenerIfExists(screen4Try, "click", () => {
+    // Retry calling: go back to screen 3
+    showScreen("screen3");
+  });
+
+  const endingBack = document.getElementById("ending-back-btn");
+  addEventListenerIfExists(endingBack, "click", () => {
+    showScreen("menu");
+  });
+
   // Audio toggle
   addEventListenerIfExists(buttons.audioToggle, "click", () => {
     toggleAudio();
@@ -183,6 +206,7 @@ function initializeGame() {
   gameState.level = 1;
   gameState.playerPosition = { x: 0, y: 0 }; // Start at top-left corner
   gameState.inventory = [];
+  gameState.essentialItems = 0;
   gameState.gameTime = 60;
   gameState.isGameRunning = true;
   gameState.currentScreenNumber = 1;
@@ -221,11 +245,19 @@ function initializeScreen1() {
   // Create supermarket shelves and items
   createSupermarketItems();
 
+  // Reset essential counter display to 0/20
+  const essentialDisplay = document.getElementById("essential-items");
+  if (essentialDisplay)
+    essentialDisplay.textContent = String(gameState.essentialItems);
+
   // Start timer
   startTimer("time-display", gameState.gameTime);
 
   // Setup keyboard controls
   setupKeyboardControls();
+
+  // Show quick guidance dialogue at the top
+  showDialogue("Hãy ấn vào item để nhặt");
 }
 
 function initializeScreen2() {
@@ -236,6 +268,11 @@ function initializeScreen2() {
   player.style.left = gameState.playerPosition.x + "px";
   player.style.top = gameState.playerPosition.y + "px";
 
+  // Reset state for screen 2
+  gameState.mainPowerOff = false;
+  const world = document.getElementById("indoor-world");
+  if (world) world.innerHTML = "";
+
   // Create indoor items
   createIndoorItems();
 
@@ -244,48 +281,200 @@ function initializeScreen2() {
 
   // Setup keyboard controls for screen 2
   setupKeyboardControls();
+
+  // Guidance for screen 2
+  showDialogue(
+    "Hãy tắt cầu dao điện trước, rồi rút phích các thiết bị và đưa thú cưng, trẻ em lên nơi an toàn"
+  );
 }
 
 function createSupermarketItems() {
   const gameWorld = document.getElementById("supermarket-world");
+  const gridSize = gameState.cellSize;
 
-  // Create shelves using grid coordinates
-  const shelves = [
-    { x: 1, y: 1, width: 4, height: 1 },
-    { x: 7, y: 1, width: 4, height: 1 },
+  // Create wall shelves layout
+  const wallShelves = [
+    // Row 1
+    {
+      x: 1,
+      y: 10,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 4,
+      y: 10,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 7,
+      y: 10,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 10,
+      y: 10,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    // Row 2
+    {
+      x: 1,
+      y: 4,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 4,
+      y: 4,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 7,
+      y: 4,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 10,
+      y: 4,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+
+    // Row 2
+    {
+      x: 1,
+      y: 6,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 4,
+      y: 6,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 7,
+      y: 6,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
+    {
+      x: 10,
+      y: 6,
+      width: 3,
+      items: [
+        { type: "food", color: "#ff6b6b" },
+        { type: "water", color: "#4ecdc4" },
+        { type: "medicine", color: "#45b7d1" },
+      ],
+    },
   ];
 
-  shelves.forEach((shelf) => {
+  wallShelves.forEach((shelf) => {
     const shelfElement = document.createElement("div");
-    shelfElement.className = "supermarket-shelf";
-    shelfElement.style.gridColumn = `${shelf.x + 1} / span ${shelf.width}`;
-    shelfElement.style.gridRow = `${shelf.y + 1} / span ${shelf.height}`;
+    shelfElement.className = "wall-shelf";
+    shelfElement.style.gridColumnStart = shelf.x;
+    shelfElement.style.gridColumnEnd = shelf.x + shelf.width;
+    shelfElement.style.gridRow = shelf.y;
+
+    // Create two rows of items
+    for (let row = 0; row < 2; row++) {
+      const rowElement = document.createElement("div");
+      rowElement.className = "shelf-row";
+
+      shelf.items.forEach((item) => {
+        const itemElement = document.createElement("div");
+        itemElement.className = `shelf-item ${item.type}-item`;
+        itemElement.dataset.itemType = item.type;
+        itemElement.dataset.itemName = getItemName(item.type);
+        itemElement.title = getItemName(item.type);
+
+        const icon = document.createElement("div");
+        icon.className = "item-icon";
+        icon.style.backgroundColor = item.color;
+        itemElement.appendChild(icon);
+
+        // Add item count display
+        const countDisplay = document.createElement("div");
+        countDisplay.className = "item-count";
+        countDisplay.textContent = "x2";
+        itemElement.appendChild(countDisplay);
+
+        itemElement.addEventListener("click", () =>
+          collectItem(itemElement, item.type)
+        );
+
+        rowElement.appendChild(itemElement);
+      });
+
+      shelfElement.appendChild(rowElement);
+    }
+
     gameWorld.appendChild(shelfElement);
   });
+}
 
-  // Create items on shelves using grid coordinates
-  const items = [
-    { type: "food", x: 1, y: 1 },
-    { type: "water", x: 2, y: 1 },
-    { type: "medicine", x: 3, y: 1 },
-    { type: "food", x: 7, y: 1 },
-    { type: "water", x: 8, y: 1 },
-    { type: "medicine", x: 9, y: 1 },
-  ];
-
-  items.forEach((item) => {
-    const itemElement = document.createElement("div");
-    itemElement.className = `shelf-item ${item.type}-item`;
-    itemElement.style.gridColumn = item.x + 1;
-    itemElement.style.gridRow = item.y + 1;
-    itemElement.dataset.itemType = item.type;
-    itemElement.dataset.gridX = item.x;
-    itemElement.dataset.gridY = item.y;
-    itemElement.addEventListener("click", () =>
-      collectItem(itemElement, item.type)
-    );
-    gameWorld.appendChild(itemElement);
-  });
+function getItemName(type) {
+  switch (type) {
+    case "food":
+      return "Đồ Ăn";
+    case "water":
+      return "Nước Uống";
+    case "medicine":
+      return "Thuốc";
+    default:
+      return type;
+  }
 }
 
 function createIndoorItems() {
@@ -294,7 +483,10 @@ function createIndoorItems() {
   // Create indoor items using grid coordinates
   const items = [
     { type: "fan", x: 2, y: 2, name: "Máy Quạt" },
-    { type: "electrical-panel", x: 5, y: 3, name: "Cầu Dao Điện" },
+    { type: "electrical-panel", x: 5, y: 2, name: "Cầu Dao Điện Tổng" },
+    { type: "circuit-breaker", x: 0, y: 0, name: "CB Góc Phòng" },
+    { type: "tv", x: 3, y: 3, name: "TV" },
+    { type: "pc", x: 6, y: 3, name: "Máy Tính" },
     { type: "pet", x: 3, y: 4, name: "Thú Cưng" },
     { type: "child", x: 6, y: 4, name: "Trẻ Em" },
   ];
@@ -316,16 +508,53 @@ function createIndoorItems() {
 }
 
 function collectItem(itemElement, itemType) {
-  if (gameState.inventory.length < 6) {
-    // Max 6 items
+  // Check if item is already collected
+  if (itemElement.classList.contains("collected")) {
+    showDialogue("Đã lấy hết đồ ở kệ này rồi!");
+    return;
+  }
+
+  // Get current count
+  const countDisplay = itemElement.querySelector(".item-count");
+  let currentCount = parseInt(countDisplay.textContent.replace("x", ""));
+
+  if (currentCount > 0) {
+    // Reduce count
+    currentCount--;
+    countDisplay.textContent = currentCount > 0 ? `x${currentCount}` : "Hết";
+
+    // Add to inventory and essential count
     gameState.inventory.push(itemType);
+    gameState.essentialItems++;
+    const essentialDisplay = document.getElementById("essential-items");
+    if (essentialDisplay)
+      essentialDisplay.textContent = String(gameState.essentialItems);
     gameState.score += 10;
     updateScoreDisplay();
-    itemElement.style.display = "none";
-    showDialogue(`Đã nhặt ${itemType}!`);
+
+    // Show message
+    showDialogue(`Đã nhặt ${getItemName(itemType)}!`);
     audioSystem.playSound("collect");
+
+    // Mark as collected if no more items
+    if (currentCount === 0) {
+      itemElement.classList.add("collected");
+      itemElement.style.opacity = "0.5";
+    }
+
+    // Win condition: 20 essential items collected
+    if (gameState.essentialItems >= 10) {
+      clearInterval(gameTimer);
+      audioSystem.playSound("success");
+      showDialogue("Tốt rồi, mình đã có đủ đồ để trú bão an toàn!");
+      setTimeout(() => {
+        initializeScreen2();
+        showScreen("screen2");
+        gameState.currentScreenNumber = 2;
+      }, 1500);
+    }
   } else {
-    showDialogue("Kho đồ đã đầy!");
+    showDialogue("Kệ này đã hết đồ!");
     audioSystem.playSound("error");
   }
 }
@@ -334,19 +563,44 @@ function interactWithItem(itemElement, itemType) {
   const itemName = itemElement.dataset.itemName;
 
   if (itemType === "electrical-panel") {
-    showDialogue(
-      "Đã tắt cầu dao điện! Bây giờ có thể an toàn rút các thiết bị khác."
-    );
-    itemElement.style.background = "#95a5a6"; // Gray out
-    gameState.score += 20;
-    updateScoreDisplay();
-    audioSystem.playSound("success");
+    if (!gameState.mainPowerOff) {
+      showDialogue(
+        "Đã tắt cầu dao điện! Bây giờ có thể an toàn rút các thiết bị khác."
+      );
+      itemElement.style.background = "#95a5a6"; // Gray out
+      gameState.mainPowerOff = true;
+      gameState.score += 10;
+      updateScoreDisplay();
+      audioSystem.playSound("success");
+    }
   } else if (itemType === "fan") {
+    if (!gameState.mainPowerOff) {
+      failScreen2("Bạn bị giật điện vì chưa tắt cầu dao tổng!");
+      return;
+    }
     showDialogue("Đã rút phích máy quạt!");
     itemElement.style.display = "none";
     gameState.score += 10;
     updateScoreDisplay();
     audioSystem.playSound("collect");
+  } else if (itemType === "tv" || itemType === "pc") {
+    if (!gameState.mainPowerOff) {
+      failScreen2("Không an toàn! Hãy tắt cầu dao điện trước.");
+      return;
+    }
+    showDialogue(`Đã rút điện ${itemName}!`);
+    itemElement.style.display = "none";
+    gameState.score += 10;
+    updateScoreDisplay();
+    audioSystem.playSound("collect");
+  } else if (itemType === "circuit-breaker") {
+    // circuit breaker acts as a shortcut to main power
+    if (!gameState.mainPowerOff) {
+      gameState.mainPowerOff = true;
+      itemElement.style.background = "#95a5a6";
+      showDialogue("Đã gạt cầu dao góc phòng xuống. Điện đã được ngắt!");
+      audioSystem.playSound("success");
+    }
   } else if (itemType === "pet" || itemType === "child") {
     showDialogue(`Đã đưa ${itemName} lên tầng trên an toàn!`);
     itemElement.style.display = "none";
@@ -357,6 +611,15 @@ function interactWithItem(itemElement, itemType) {
 
   // Check if all tasks completed
   checkScreen2Completion();
+}
+
+function failScreen2(message) {
+  showDialogue(message || "Bạn chưa chuẩn bị đúng cách!");
+  audioSystem.playSound("error");
+  setTimeout(() => {
+    initializeScreen2();
+    showScreen("screen2");
+  }, 1500);
 }
 
 function checkScreen2Completion() {
@@ -399,11 +662,11 @@ function createBedroomItems() {
 
   // Create bedroom items using grid coordinates
   const items = [
-    { type: "bed", x: 2, y: 3, width: 2, height: 1, name: "Giường" },
-    { type: "wardrobe", x: 7, y: 2, name: "Tủ" },
-    { type: "phone", x: 4, y: 4, name: "Điện Thoại" },
-    { type: "whistle", x: 5, y: 4, name: "Còi" },
-    { type: "flashlight", x: 3, y: 2, name: "Đèn Pin" },
+    { type: "bed", x: 2, y: 3, width: 2, height: 1, name: "Giường an toàn" },
+    { type: "water", x: 7, y: 2, name: "Bình nước dự trữ" },
+    { type: "phone", x: 4, y: 4, name: "Điện thoại liên lạc khẩn cấp" },
+    { type: "whistle", x: 5, y: 4, name: "Còi phát tín hiệu" },
+    { type: "flashlight", x: 3, y: 2, name: "Đèn pin" },
   ];
 
   items.forEach((item) => {
@@ -433,6 +696,7 @@ function interactWithBedroomItem(itemElement, itemType) {
   if (itemType === "phone") {
     showDialogue("Đã lấy điện thoại! Bây giờ có thể gọi cầu cứu.");
     itemElement.style.display = "none";
+    gameState.hasPhone = true;
     showPhoneInterface();
   } else if (itemType === "whistle") {
     showDialogue("Đã lấy còi! Sẽ dùng để phát tín hiệu khi đoàn cứu hộ đến.");
@@ -474,14 +738,20 @@ function setupPhoneInterface() {
       phoneNumber === "113"
     ) {
       showDialogue(
-        "Đã gọi cầu cứu thành công! Đoàn cứu hộ sẽ đến trong 5 giây."
+        "Đã gọi cầu cứu thành công! Chuyển sang màn liên lạc cứu hộ."
       );
       gameState.phoneCalled = true;
       hidePhoneInterface();
       audioSystem.playSound("phone");
       setTimeout(() => {
-        showRescueTeam();
-      }, 5000);
+        const title = document.getElementById("screen4-title");
+        const msg = document.getElementById("screen4-message");
+        if (title && msg) {
+          title.textContent = "CHÚC MỪNG BẠN ĐÃ VƯỢT QUA CƠN BÃO";
+          msg.textContent = "Liên lạc thành công. Nhấn Tiếp tục để xem ENDING.";
+        }
+        showScreen("screen4");
+      }, 1500);
     } else {
       showDialogue("Số điện thoại không đúng! Hãy gọi 114, 115, hoặc 113.");
       audioSystem.playSound("error");
@@ -554,9 +824,32 @@ function useWhistle() {
 }
 
 function showDialogue(text) {
+  const dialogueBox = document.querySelector(".dialogue-box");
   const dialogueText = document.querySelector(".dialogue-text");
-  if (dialogueText) {
+
+  if (dialogueBox && dialogueText) {
+    // Show the dialogue box if it was hidden
+    dialogueBox.classList.remove("hidden");
     dialogueText.textContent = text;
+
+    // Clear any existing click handler
+    dialogueBox.removeEventListener("click", hideDialogue);
+
+    // Add click handler to hide dialogue
+    dialogueBox.addEventListener("click", hideDialogue);
+
+    // Auto-hide dialogue after 5 seconds
+    clearTimeout(gameState.dialogueTimer);
+    gameState.dialogueTimer = setTimeout(() => {
+      hideDialogue();
+    }, 5000);
+  }
+}
+
+function hideDialogue() {
+  const dialogueBox = document.querySelector(".dialogue-box");
+  if (dialogueBox) {
+    dialogueBox.classList.add("hidden");
   }
 }
 
@@ -594,6 +887,11 @@ function startTimer(displayId, time) {
           showScreen("screen2");
           gameState.currentScreenNumber = 2;
         }, 2000);
+      } else if (gameState.currentScreenNumber === 2) {
+        // When screen 2 runs out of time, go to screen 3
+        initializeScreen3();
+        showScreen("screen3");
+        gameState.currentScreenNumber = 3;
       } else {
         showDialogue("Hết thời gian! Game over!");
       }

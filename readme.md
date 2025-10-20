@@ -68,6 +68,13 @@ Mái nhà bị gió giật tung, đồ đạc chìm trong nước lũ, những c
 Qua mỗi bước đi, bạn sẽ hiểu rằng chuẩn bị tốt — không chỉ để bảo vệ bản thân, mà còn để giữ vững niềm tin cho cả một vùng quê sau bão.”
 
 \_SCREEN 1: Screen về chuẩn bị trước khi bão - ở siêu thị. Sẽ có các kệ hàng và các đồ ăn ở trên đó.
+Bên trong siêu thị mua đồ
+1st line: “Bão sắp đến rồi, hãy cùng tôi chọn những thứ thiết yếu để tránh bão nhé”
+Không gian siêu thị với các dãy kệ hàng song song, trưng bày thực phẩm và đồ dùng sinh hoạt, Cửa kính lớn phía sau cho thấy mưa nhẹ, gió lắc nhẹ cây ngoài đường, nền trời xám xịt. Biển hiệu điện tử hoặc bảng thông báo “Cảnh báo: Bão cấp 8 sắp đến, người dân chủ động chuẩn bị nhu yếu phẩm”. Một vài kệ hàng trống hoặc thùng hàng trống thể hiện tình trạng khan hiếm hàng
+Nhiệm vụ: Người chơi cần chọn các vật phẩm cần thiết để trú bão trong giới hạn thời gian. Phải loại bỏ những món đồ không cần thiết để tiết kiệm tiền và chỗ trong giỏ hàng. Các nhóm đồ vật xuất hiện trên kệ: Đồ thiết yếu (cần chọn) Mì gói, Nước đóng chai, Sữa hộp, Đèn pin, Hộp thuốc, Bánh quy, đồ ăn khô. Đồ không cần thiết (phải tránh) Đồ chơi trẻ em, dụng cụ học tập (bút, thước, tập), gấu bông
+Cơ chế tương tác: Người chơi di chuyển qua các kệ hàng, nhấn hoặc chạm để cho vào giỏ. Khi chọn sai quá 3 món đồ không cần thiết → cảnh báo xuất hiện: “Không hợp lý! Trong bão, ta cần ưu tiên nhu yếu phẩm cơ bản.”
+Win Condition (Điều kiện thắng – qua ải) Thu thập ít nhất 5 món đồ thiết yếu trong danh sách. Không chọn quá 2 món đồ không cần thiết. Hoàn thành trong thời gian giới hạn 60 giây. Khi thắng, nhân vật nói: “Tốt rồi, mình đã có đủ đồ để trú bão an toàn!” → Màn hình chuyển sang cảnh tiếp t.
+Fail Condition (Điều kiện thua – chơi lại) Chọn từ 3 món đồ không cần thiết trở lên, hoặc Hết thời gian mà chưa đủ 5 món thiết yếu. Khi thua, màn hình hiện thông báo: “Bạn chưa chuẩn bị đủ cho cơn bão! Hãy thử lại và chọn kỹ hơn nhé.”
 
 đoạn script hội thoại của main nói về hiện trạng của bão lũ ở dưới
 ![alt text]('SGS_Myway_C3_Giongbao/screenshots/Screenshot 2025-10-20 at 13.10.31.png')

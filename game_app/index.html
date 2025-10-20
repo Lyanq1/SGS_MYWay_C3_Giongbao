@@ -18,7 +18,7 @@
             class="storm-bg"
           />
         </div>
-
+        <div>Giông Bão</div>
         <!-- Vietnamese Character with Conical Hat -->
         <div class="vietnamese-character">
           <img
@@ -43,10 +43,12 @@
         <div class="game-header">
           <h3>Siêu Thị - Chuẩn Bị Trước Khi Bão</h3>
           <div class="game-info">
-            <span>Score: <span id="score-display">0</span></span>
+            <span>Đồ thiết yếu: <span id="essential-items">0</span>/10</span>
             <span>Time: <span id="time-display">60</span>s</span>
           </div>
         </div>
+
+        <!-- Info Box (not dialogue) -->
 
         <!-- Game Grid -->
         <div class="game-grid">
@@ -68,15 +70,16 @@
 
         <!-- Dialogue Box -->
         <div class="dialogue-box" id="dialogue-box">
-          <div class="character-portrait"></div>
           <div class="dialogue-content">
-            <span class="character-name">Suneo</span>
-            <p class="dialogue-text">
-              Chúng ta cần chuẩn bị đồ ăn và nước uống trước khi bão đến!
-            </p>
+            <p class="dialogue-text"></p>
           </div>
         </div>
-
+        <div class="info-box-container">
+          <div class="info-box">
+            Bão sắp đến rồi, hãy cùng tôi chọn những thứ thiết yếu để tránh bão
+            nhé
+          </div>
+        </div>
         <div class="game-controls">
           <button id="screen1-back-btn" class="btn secondary">Menu</button>
         </div>
@@ -103,6 +106,9 @@
 
         <!-- Indoor Area (70% width) -->
         <div class="indoor-section">
+          <div class="screen2-info">
+            Tắt cầu dao tổng trước khi rút thiết bị
+          </div>
           <div class="game-world" id="indoor-world">
             <!-- Indoor items will be generated here -->
           </div>
@@ -172,6 +178,7 @@
         <div class="phone-interface" id="phone-interface">
           <div class="phone-screen">
             <div class="phone-display" id="phone-display">114</div>
+            <div class="phone-hint">Hãy gọi 113, 114 hoặc 115</div>
             <div class="phone-buttons">
               <button class="phone-btn" data-number="1">1</button>
               <button class="phone-btn" data-number="2">2</button>
@@ -195,6 +202,33 @@
       </div>
     </div>
 
+    <!-- Screen 4: Rescue Status -->
+    <div id="screen4-success" class="screen">
+      <div class="container">
+        <h2 id="screen4-title">Trạng thái liên lạc</h2>
+        <p id="screen4-message">Đang xử lý…</p>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+          <button id="screen4-try-btn" class="btn secondary">Thử lại</button>
+          <button id="screen4-continue-btn" class="btn primary">Tiếp tục</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENDING Screen -->
+    <div id="screen-ending" class="screen">
+      <div class="container">
+        <h2>CHÚC MỪNG BẠN ĐÃ VƯỢT QUA CƠN BÃO</h2>
+        <p>
+          Mỗi cơn bão đi qua đều để lại mất mát, nhưng dọn dẹp cũng là cách để
+          bắt đầu lại — từng chút một.
+        </p>
+        <p>
+          Chúng ta không thể tránh bão, nhưng có thể mạnh mẽ hơn sau nó.
+        </p>
+        <button id="ending-back-btn" class="btn primary">Về Menu</button>
+      </div>
+    </div>
+
     <!-- Instructions Screen -->
     <div id="instructions-screen" class="screen">
       <div class="container">
@@ -215,9 +249,23 @@
       <div class="meaning-container">
         <!-- Images Section (40% width) -->
         <div class="images-section">
-          <div class="storm-image" id="storm-img-1"></div>
-          <div class="storm-image" id="storm-img-2"></div>
-          <div class="storm-image" id="storm-img-3"></div>
+          <div class="storm-image" id="storm-img-1">
+            <img
+              src="https://images.baodantoc.vn/uploads/2024/Thang-9/Ngay-12/Nhat/bao%20so3.jpg"
+            />
+          </div>
+
+          <div class="storm-image" id="storm-img-2">
+            <img
+              src="https://images.baodantoc.vn/uploads/2024/Thang-9/Ngay-12/Nhat/ngap1.jpg"
+            />
+          </div>
+
+          <div class="storm-image" id="storm-img-3">
+            <img
+              src="https://media-cdn-v2.laodong.vn/storage/newsportal/2024/9/10/1392076/Lai-Chau-Giup-Dan-Kh.jpg"
+            />
+          </div>
         </div>
 
         <!-- Content Section (60% width) -->

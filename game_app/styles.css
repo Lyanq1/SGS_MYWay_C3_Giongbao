@@ -67,7 +67,7 @@ body {
 /* Vietnamese Character - Pixel Art Style */
 .vietnamese-character {
   position: absolute;
-  bottom: 35%;
+  bottom: 55%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -76,45 +76,40 @@ body {
 .character-sprite {
   --grid-size: calc(800px / 14); /* Based on container width and grid columns */
   width: var(--grid-size);
-  height: calc(var(--grid-size) * 1.5);
+  height: var(--grid-size);
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   animation: idle 1s steps(2) infinite;
   transition: transform 0.2s ease;
+  object-fit: contain;
 }
 
 @keyframes idle {
   0% {
-    transform: translateY(0);
+    transform: scale(1);
   }
   50% {
-    transform: translateY(-2px);
+    transform: scale(0.95);
   }
   100% {
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
 .character-sprite.walking {
-  animation: walk 0.4s steps(4) infinite;
+  animation: walk 0.3s steps(2) infinite;
 }
 
 @keyframes walk {
   0% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-4px);
+    transform: scale(1);
   }
   50% {
-    transform: translateY(0);
-  }
-  75% {
-    transform: translateY(-4px);
+    transform: scale(0.9) translateY(-1px);
   }
   100% {
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
@@ -127,63 +122,60 @@ body {
 }
 
 .character-sprite[data-direction="up"] {
-  animation: walkUp 0.4s steps(4) infinite;
+  animation: walkUp 0.3s steps(2) infinite;
 }
 
 .character-sprite[data-direction="down"] {
-  animation: walkDown 0.4s steps(4) infinite;
+  animation: walkDown 0.3s steps(2) infinite;
 }
 
 @keyframes walkUp {
   0% {
-    transform: translateY(0) translateX(0);
-  }
-  25% {
-    transform: translateY(-4px) translateX(2px);
+    transform: scale(1);
   }
   50% {
-    transform: translateY(0) translateX(0);
-  }
-  75% {
-    transform: translateY(-4px) translateX(-2px);
+    transform: scale(0.9) translateY(-1px);
   }
   100% {
-    transform: translateY(0) translateX(0);
+    transform: scale(1);
   }
 }
 
 @keyframes walkDown {
   0% {
-    transform: translateY(0) translateX(0);
-  }
-  25% {
-    transform: translateY(4px) translateX(-2px);
+    transform: scale(1);
   }
   50% {
-    transform: translateY(0) translateX(0);
-  }
-  75% {
-    transform: translateY(4px) translateX(2px);
+    transform: scale(0.9) translateY(1px);
   }
   100% {
-    transform: translateY(0) translateX(0);
+    transform: scale(1);
   }
 }
 
 /* Player Character */
 .player-character {
   position: absolute;
-  width: 32px;
-  height: 48px;
+  width: 40px; /* Fixed size to match grid */
+  height: 40px;
   z-index: 15;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Allow clicking through character */
+  left: calc(50% - 20px); /* Center horizontally */
+  top: calc(50% - 20px); /* Center vertically */
 }
 
 .player-character img {
-  width: 100%;
-  height: 100%;
+  width: 200%;
+  height: 200%;
   image-rendering: pixelated;
-  transform-origin: bottom center;
+  transform-origin: center;
+  object-fit: contain;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 /* Main Menu Buttons */
@@ -391,22 +383,39 @@ h2 {
 /* Game Grid */
 .game-grid {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 80px);
+  height: calc(100% - 120px);
   display: grid;
-  grid-template-columns: repeat(14, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  gap: 1px;
+  grid-template-columns: repeat(14, minmax(40px, 1fr));
+  grid-template-rows: repeat(10, minmax(40px, 1fr));
+  gap: 2px;
   pointer-events: none;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px;
+  border-radius: 4px;
 }
 
 .grid-cell {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
+  border: 5px solid rgba(219, 223, 226, 0.3);
+  background: rgba(135, 206, 235, 0.1);
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.grid-cell::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(219, 223, 226, 0.2);
+  border-radius: 50%;
 }
 
 .game-header {
@@ -424,6 +433,28 @@ h2 {
   border-radius: 8px;
 }
 
+/* Info Box (screen 1) */
+.info-box-container {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 80px);
+  display: flex;
+  justify-content: center;
+  z-index: 19;
+}
+
+.info-box {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #4682b4;
+  color: #2d3748;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
 .game-info {
   display: flex;
   gap: 20px;
@@ -433,16 +464,52 @@ h2 {
 /* Game World */
 .game-world {
   position: absolute;
-  top: calc(var(--grid-size));
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 80px);
+  height: calc(100% - 120px);
+  background: #87ceeb;
+  border: 2px solid #4682b4;
+  display: grid;
+  grid-template-columns: repeat(14, minmax(40px, 1fr));
+  grid-template-rows: repeat(8, minmax(40px, 1fr));
+  gap: 2px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Wall Shelves */
+.wall-shelf {
+  width: 100%;
+  height: 100%;
+  background: #8b4513;
+  border-bottom: 4px solid #654321;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wall-shelf::before {
+  content: "";
+  position: absolute;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: calc(var(--grid-size));
-  background: #90ee90;
-  border: 2px solid #228b22;
-  display: grid;
-  grid-template-columns: repeat(14, var(--grid-size));
-  grid-template-rows: repeat(8, var(--grid-size));
-  gap: 1px;
+  height: 6px;
+  background: #a0522d;
+  border-bottom: 1px solid #000;
+}
+
+.shelf-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50%;
+  padding: 2px;
 }
 
 /* Player Character */
@@ -509,6 +576,14 @@ h2 {
   align-items: center;
   padding: 15px;
   z-index: 25;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dialogue-box.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
 }
 
 .character-portrait {
@@ -567,7 +642,7 @@ h2 {
   right: 0;
   width: 30%;
   height: calc(100vh - 120px);
-  background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+  background: #5a5f66; /* stormy sky */
   border-left: 3px solid #000;
 }
 
@@ -575,8 +650,9 @@ h2 {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 4px solid #8b4513;
-  background: rgba(0, 0, 0, 0.3);
+  border: 4px solid #2c3e50;
+  background: #5a5f66 url("assets/backgrounds/storm_bg.svg") center/cover
+    no-repeat;
 }
 
 .rain-effect-window {
@@ -600,9 +676,9 @@ h2 {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 33%;
-  background: linear-gradient(180deg, #8b4513 0%, #654321 100%);
-  border-top: 2px solid #4a2c2a;
+  height: 40%;
+  background: #09c; /* flood blue */
+  border-top: 2px solid #0378a6;
 }
 
 .flood-water-window-high {
@@ -611,8 +687,8 @@ h2 {
   left: 0;
   width: 100%;
   height: 60%;
-  background: linear-gradient(180deg, #8b4513 0%, #654321 100%);
-  border-top: 2px solid #4a2c2a;
+  background: #09c;
+  border-top: 2px solid #0378a6;
 }
 
 .tree-outside {
@@ -620,10 +696,10 @@ h2 {
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
-  height: 40px;
-  background: #228b22;
-  border: 2px solid #000;
+  width: 22px;
+  height: 45px;
+  background: #2e8b57;
+  border: 2px solid #0a3d2e;
   image-rendering: pixelated;
 }
 
@@ -647,6 +723,20 @@ h2 {
   height: calc(100vh - 120px);
   background: #f5deb3;
   border-right: 3px solid #000;
+}
+
+/* Info box for screen 2 */
+.screen2-info {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #4682b4;
+  color: #2d3748;
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 25;
 }
 
 /* Screen 3 Specific Styles */
@@ -694,6 +784,13 @@ h2 {
   border: 2px solid #333;
   margin-bottom: 10px;
   image-rendering: pixelated;
+}
+
+.phone-hint {
+  color: #ecf0f1;
+  font-size: 12px;
+  text-align: center;
+  margin: 4px 0 8px;
 }
 
 .phone-buttons {
@@ -810,11 +907,13 @@ h2 {
 
 /* Supermarket Items - Pixel Art Style */
 .supermarket-shelf {
-  position: absolute;
   background: #8b4513;
   border: 2px solid #000;
   image-rendering: pixelated;
   box-shadow: 2px 2px 0px #654321;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .supermarket-shelf::before {
@@ -840,22 +939,115 @@ h2 {
 }
 
 .shelf-item {
-  width: var(--grid-size);
-  height: var(--grid-size);
-  border: 2px solid #000;
+  width: 24px;
+  height: 32px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   image-rendering: pixelated;
-  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 2px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .shelf-item:hover {
   transform: scale(1.1);
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   z-index: 10;
+}
+
+.item-count {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  background: #4a5568;
+  color: white;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 8px;
+  border: 1px solid white;
+}
+
+.item-icon {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  background: #fff;
+  position: relative;
+  box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.item-icon::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.item-icon::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}
+
+.food-item .item-icon {
+  background: #ff6b6b;
+  position: relative;
+}
+
+.food-item .item-icon::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background: #ff8e8e;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
+.water-item .item-icon {
+  background: #4ecdc4;
+  position: relative;
+}
+
+.water-item .item-icon::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 30%;
+  width: 40%;
+  height: 70%;
+  background: #6ed5d5;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
+.medicine-item .item-icon {
+  background: #45b7d1;
+  position: relative;
+}
+
+.medicine-item .item-icon::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 35%;
+  width: 30%;
+  height: 60%;
+  background: #67c3e0;
+  border: 1px solid #000;
+  border-radius: 2px;
 }
 
 .food-item {
@@ -980,6 +1172,36 @@ h2 {
   background: #e74c3c;
   border: 1px solid #000;
   border-radius: 50%;
+}
+
+/* Circuit Breaker (corner asset) */
+.circuit-breaker-item {
+  background: #2c3e50;
+  border-radius: 3px;
+  position: relative;
+}
+
+.circuit-breaker-item::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 10px;
+  background: #34495e;
+  border: 1px solid #000;
+}
+
+.circuit-breaker-item::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-20deg);
+  width: 12px;
+  height: 3px;
+  background: #e67e22; /* lever */
+  border: 1px solid #000;
 }
 
 .pet-item {
