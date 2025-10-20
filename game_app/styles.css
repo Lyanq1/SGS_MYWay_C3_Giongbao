@@ -86,6 +86,13 @@ body {
   z-index: 10;
 }
 
+/* Resize the opening screen character independently of in-game sprites */
+.vietnamese-character .character-sprite {
+  width: clamp(120px, 18vw, 160px);
+  height: auto;
+  image-rendering: pixelated;
+}
+
 .character-sprite {
   --grid-size: calc(800px / 14); /* Based on container width and grid columns */
   width: var(--grid-size);
