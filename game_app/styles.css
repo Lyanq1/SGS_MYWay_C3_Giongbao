@@ -47,6 +47,19 @@ body {
   overflow: hidden;
 }
 
+.main-title {
+  position: absolute;
+  top: 4vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Press Start 2P", cursive;
+  font-size: clamp(24px, 4vw, 56px);
+  color: #ecf0f1;
+  text-shadow: 4px 4px 0 #2c3e50, 8px 8px 0 rgba(0, 0, 0, 0.4);
+  letter-spacing: 2px;
+  z-index: 15;
+}
+
 /* Storm Background */
 .storm-background {
   position: absolute;
@@ -215,6 +228,7 @@ body {
   border: 3px solid #34495e;
   border-radius: 8px;
   position: relative;
+  overflow: hidden;
 }
 
 .storm-image::before {
@@ -231,6 +245,14 @@ body {
     transparent 5px,
     transparent 10px
   );
+}
+
+/* Make about images fit their container */
+.storm-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .content-section {
@@ -891,8 +913,8 @@ h2 {
 }
 
 .phone-item {
-  background: #2c3e50;
-  border-radius: 50%;
+  background: url("assets/phone-thin.svg") center/contain no-repeat;
+  border-radius: 4px;
 }
 
 .whistle-item {
@@ -975,6 +997,21 @@ h2 {
   background: #fff;
   position: relative;
   box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* First water item replaced by an image */
+.img-water-bottle .item-icon {
+  background: transparent;
+  border: none;
+}
+
+.img-water-bottle .item-icon::before,
+.img-water-bottle .item-icon::after {
+  content: none;
+}
+
+.img-water-bottle {
+  background: url("assets/waterbottle.png") center/contain no-repeat;
 }
 
 .item-icon::before {

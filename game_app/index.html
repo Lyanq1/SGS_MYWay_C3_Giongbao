@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GiongBao - Storm Preparation Game</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -18,7 +22,7 @@
             class="storm-bg"
           />
         </div>
-        <div>Giông Bão</div>
+        <h1 class="main-title">Giông Bão</h1>
         <!-- Vietnamese Character with Conical Hat -->
         <div class="vietnamese-character">
           <img
@@ -177,7 +181,7 @@
         <!-- Phone Interface -->
         <div class="phone-interface" id="phone-interface">
           <div class="phone-screen">
-            <div class="phone-display" id="phone-display">114</div>
+            <div class="phone-display" id="phone-display">0</div>
             <div class="phone-hint">Hãy gọi 113, 114 hoặc 115</div>
             <div class="phone-buttons">
               <button class="phone-btn" data-number="1">1</button>
@@ -207,9 +211,18 @@
       <div class="container">
         <h2 id="screen4-title">Trạng thái liên lạc</h2>
         <p id="screen4-message">Đang xử lý…</p>
-        <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+          "
+        >
           <button id="screen4-try-btn" class="btn secondary">Thử lại</button>
-          <button id="screen4-continue-btn" class="btn primary">Tiếp tục</button>
+          <button id="screen4-continue-btn" class="btn primary">
+            Tiếp tục
+          </button>
         </div>
       </div>
     </div>
@@ -222,9 +235,7 @@
           Mỗi cơn bão đi qua đều để lại mất mát, nhưng dọn dẹp cũng là cách để
           bắt đầu lại — từng chút một.
         </p>
-        <p>
-          Chúng ta không thể tránh bão, nhưng có thể mạnh mẽ hơn sau nó.
-        </p>
+        <p>Chúng ta không thể tránh bão, nhưng có thể mạnh mẽ hơn sau nó.</p>
         <button id="ending-back-btn" class="btn primary">Về Menu</button>
       </div>
     </div>

@@ -419,6 +419,8 @@ function createSupermarketItems() {
       ],
     },
   ];
+  // Use the water bottle image for the first water item we render
+  let waterBottleApplied = false;
 
   wallShelves.forEach((shelf) => {
     const shelfElement = document.createElement("div");
@@ -442,6 +444,11 @@ function createSupermarketItems() {
         const icon = document.createElement("div");
         icon.className = "item-icon";
         icon.style.backgroundColor = item.color;
+        // If this is the first water item, use the bottle image
+        if (item.type === "water" && !waterBottleApplied) {
+          itemElement.classList.add("img-water-bottle");
+          waterBottleApplied = true;
+        }
         itemElement.appendChild(icon);
 
         // Add item count display
@@ -728,7 +735,7 @@ function setupPhoneInterface() {
 
   clearBtn.addEventListener("click", () => {
     phoneNumber = "";
-    phoneDisplay.textContent = "114";
+    phoneDisplay.textContent = "0";
   });
 
   callBtn.addEventListener("click", () => {
