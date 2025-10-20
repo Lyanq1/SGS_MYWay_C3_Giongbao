@@ -1,6 +1,6 @@
 PLACEHOLDER: Include only the YouTube URL for your game's demo video with voice-over (maximum 7 minutes)
 
 Example format:
-https://www.youtube.com/watch?v=YOUR_VIDEO_ID
+https://youtu.be/eIf5ORFph90
 
 This file should contain the actual YouTube link once the demo video is created.
